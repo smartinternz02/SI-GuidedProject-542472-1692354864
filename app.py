@@ -119,11 +119,11 @@ def signup():
             insert_sql = "INSERT INTO sb_table1 VALUES (?,?,?,?,?)"
             prep_stmt = ibm_db.prepare(conn, insert_sql)
             # this username & password is should be same as db-2 details & order also
-            ibm_db.bind_param(prep_stmt, 1, name)
-            ibm_db.bind_param(prep_stmt, 2, email)
+            ibm_db.bind_param(prep_stmt, 2, name)
+            ibm_db.bind_param(prep_stmt, 1, email)
             ibm_db.bind_param(prep_stmt, 8, username)
-            ibm_db.bind_param(prep_stmt, 5, role)
             ibm_db.bind_param(prep_stmt, 7, password)
+            ibm_db.bind_param(prep_stmt, 5, role)
             ibm_db.execute(prep_stmt)
             payload = {
                 "personalizations": [
@@ -132,17 +132,17 @@ def signup():
                         "subject": "Student Account Details"
                     }
                 ],
-                "from": {"email": "mahidhar@thesmartbridge.com"},
+                "from": {"email": "ibm2023sb03113@smartinternz.com"},
                 "content": [
                     {
                         "type": "text/plain",
-                        "value": "Dear {} ,  \n Welcome to Mahidhar University, Here there the details to Login Into your student portal link : {} \n YOUR Username : {} \n  PASSWORD : {}  \n Thank you \n Sincerely\n Office of  Admissions\n Mahidhar Institute of Technology \n E-Mail: admission@mahidharuniversity.ac.in ; Website: www.mahidharuniversity.ac.in" .format( name,link, username, password)
+                        "value": "Dear {} ,  \n Welcome to University, Here there the details to Login Into your student portal link : {} \n YOUR Username : {} \n  PASSWORD : {}  \n Thank you \n Sincerely\n Office of  Admissions\n Mahidhar Institute of Technology \n E-Mail: admission@mahidharuniversity.ac.in ; Website: www.mahidharuniversity.ac.in" .format( name,link, username, password)
                     }
                 ]
             }
             headers = {
                 "content-type": "application/json",
-                "X-RapidAPI-Key": "714250c24fmsh829f65c05932f01p1ad65cjsn43a39e64b3bb",
+                "X-RapidAPI-Key": "86f2a821b3msh2ae265d62478327p1bb7d1jsn9187c35b3e14",
                 "X-RapidAPI-Host": "rapidprod-sendgrid-v1.p.rapidapi.com"
             }
 
@@ -190,11 +190,11 @@ def sassignment():
             f.save(filepath)
             # connecting with cloud object storage
             
-            COS_ENDPOINT = "https://s3.jp-tok.cloud-object-storage.appdomain.cloud"
-            COS_API_KEY_ID = "feQ_YXP6d0HktdnQwEH6YFh545ZpgacGGQJkguFhthrb"
-            COS_INSTANCE_CRN = "crn:v1:bluemix:public:cloud-object-storage:global:a/2396b07efb5e497894432383c651d668:2883dbef-d638-4e0a-922e-2ad686a7ad08::"
+            COS_ENDPOINT = "https://control.cloud-object-storage.cloud.ibm.com/v2/endpoints"
+            COS_API_KEY_ID = "g39YikZ9wwuGJfT5GXP0vQM40nB4dc83M7_Bld4sic1Y"
+            COS_INSTANCE_CRN = "crn:v1:bluemix:public:cloud-object-storage:global:a/527e41d6cd444bd1b91160f49a5d4753:9c0a2ee4-5285-44ab-a3ea-b38ef66e0da6::"
             cos = ibm_boto3.resource("s3",ibm_api_key_id=COS_API_KEY_ID,ibm_service_instance_id=COS_INSTANCE_CRN, config=Config(signature_version="oauth"),endpoint_url=COS_ENDPOINT)
-            cos.meta.client.upload_file(Filename= filepath,Bucket='studentassignmentsb',Key= u+x+".pdf")
+            cos.meta.client.upload_file(Filename= filepath,Bucket='bsec',Key= u+x+".pdf")
             msg = "Uploding Successful"
             ts = datetime.datetime.now()
             t = ts.strftime("%Y-%m-%d %H:%M:%S")
@@ -252,15 +252,15 @@ def marksassign(stdname):
     global file
     da  = []
     
-    COS_ENDPOINT = "https://s3.jp-tok.cloud-object-storage.appdomain.cloud"
-    COS_API_KEY_ID = "feQ_YXP6d0HktdnQwEH6YFh545ZpgacGGQJkguFhthrb"
-    COS_INSTANCE_CRN = "crn:v1:bluemix:public:cloud-object-storage:global:a/2396b07efb5e497894432383c651d668:2883dbef-d638-4e0a-922e-2ad686a7ad08::"
+    COS_ENDPOINT = "https://control.cloud-object-storage.cloud.ibm.com/v2/endpoints"
+    COS_API_KEY_ID = "g39YikZ9wwuGJfT5GXP0vQM40nB4dc83M7_Bld4sic1Y"
+    COS_INSTANCE_CRN = "crn:v1:bluemix:public:cloud-object-storage:global:a/527e41d6cd444bd1b91160f49a5d4753:9c0a2ee4-5285-44ab-a3ea-b38ef66e0da6::"
     cos = ibm_boto3.client("s3",
                         ibm_api_key_id=COS_API_KEY_ID,
                         ibm_service_instance_id=COS_INSTANCE_CRN,
                         config=Config(signature_version="oauth"),
                         endpoint_url=COS_ENDPOINT)
-    output = cos.list_objects(Bucket="studentassignmentsb")
+    output = cos.list_objects(Bucket="bsec")
     output
     l=[]
     for i in range(0,len(output['Contents'])):
